@@ -494,7 +494,7 @@ bob.name = 'bob'
 console.log(bob.name) // Bob hi
 bob.speak('hi') // Bob hi
 let lisa = Person() 
-lisa.name='lisa' // <-- setter this=global
+lisa.name='lisa' 
 console.log(lisa.name) // null
 lisa.speak('hi') // undefined hi
 
