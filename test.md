@@ -39,7 +39,7 @@ y //x; ++y
 ### 类型、值和变量
 除了 数字、字符串、布尔值、null 和 undefined 之外都是对象
 ``` javascript
->> let list = [1,2,3]
+> let list = [1,2,3]
 < undefined
 > list
 < [1, 2, 3] (3)
