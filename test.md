@@ -95,7 +95,7 @@ Date() RegExp() String() Object() Array() //常见数据结构
 
 Math JSON //常见操作
 JSON.parse(JSON.stringify({name:'bob'}))
-Math.max(0, Math.min( page, length ) )
+Math.max(0, Math.min( page, page_size ) )
 ```
 
 ### 对象包装
@@ -456,7 +456,7 @@ dog eat coin
 ### ES5中的类
 ```js
 function Person(name){
-    let props = {
+    const props = {
         _name: {
             value:null,
             writable: true, // default is false
@@ -467,6 +467,7 @@ function Person(name){
                 return this._name
             },
             set: (value)=>{
+                console.log(this)
                 if(value.length){
                     value = value.split('')
                     value[0] = value[0].toUpperCase()
@@ -475,15 +476,35 @@ function Person(name){
                 }
             },
         },
+        speak: {
+            value:(x)=>{
+                console.log(this.name,x)
+            }
+        },
+        say: ()=>{
+            console.log(this.name)
+        }
     }
     if(this instanceof Person)
         Object.defineProperties(this, props)
     else return Object.create(Person.prototype,props)
 }
-let p = new Person()
-p.name = 'bob'
-console.log(p.name)
-// Bob
+let bob = new Person()
+bob.name = 'bob'
+console.log(bob.name) // Bob hi
+bob.speak('hi') // Bob hi
+let lisa = Person() 
+lisa.name='lisa' // <-- setter this=global
+console.log(lisa.name) // null
+lisa.speak('hi') // undefined hi
+
+console.log(bob instanceof Person) // true
+console.log(lisa instanceof Person) // true
+console.log(bob.speak===lisa.speak) // false
+let bart= new Person()
+console.log(bob.speak===bart.speak) // false
+console.log(bob.say===bart.s) // true
+bob.say() // bob.say is not a function
 
 ```
 <!-- page 252 -->
