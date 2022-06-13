@@ -1,29 +1,40 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Person = /** @class */ (function () {
-    function Person(name) {
-        this.name = name;
+
+var _a=0
+Object.defineProperties(globalThis,{
+    'a' : {
+        get(){
+            return ++_a;
+        }
     }
-    return Person;
-}());
-var Student = /** @class */ (function (_super) {
-    __extends(Student, _super);
-    function Student() {
-        return _super !== null && _super.apply(this, arguments) || this;
+})
+
+console.log(global)
+if ( a===1 && a===2 && a===3 ){
+    console.log('pass')
+}
+
+let obj = {m:{key:17}}
+
+let {m:{key}} = obj
+
+console.log(key)
+
+function f([a,b]){
+    return a+b
+}
+
+console.log([[1,2],[3,4]].map(f))
+
+console.log(...[0,3])
+{
+    let Person = class{
+        name
+        constructor(name){
+            this.name = name
+        }
     }
-    return Student;
-}(Person));
-var p = new Student('');
+    let p = new Person('bob')
+    console.log(p)
+}
+
+
