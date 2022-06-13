@@ -1,3 +1,11 @@
-const arr = Object.freeze([1,2,])
-console.log(arr)
-arr.push( 3 ) // Uncaught TypeError TypeError: Cannot add property 0, object is not extensible
+// file main.js
+console.log(this === globalThis) // false
+this.s=21
+const obj = {
+  s: 42,
+  m(){
+      console.log(this)
+      console.log(this.s)
+  }
+};
+obj.m.call(this) // 21
