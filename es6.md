@@ -305,3 +305,267 @@ toString() 方法会返回代码，以前会省略注释和空格。
 ``` js
 console.log(...[1,2,3,]) // 1 2 3
 ```
+### [实例方法：at()](https://es6.ruanyifeng.com/#docs/array#实例方法：at)
+```js
+const arr = [5, 12, 8, 130, 44];
+arr.at(2) // 8
+arr.at(-2) // 130
+```
+这一方法在node12中未被使用，node16中被使用了。
+
+## [对象的扩展](https://es6.ruanyifeng.com/#docs/object)
+### [属性的简洁表示法](https://es6.ruanyifeng.com/#docs/object#属性的简洁表示法)
+```js
+const url = 't.co'
+const req = {url,}
+console.log(req) // {url: 't.co'}
+```
+
+### [super 关键字](https://es6.ruanyifeng.com/#docs/object#super-关键字)
+
+```js
+const proto = {
+  foo: 'hello'
+};
+
+const obj = {
+  foo: 'world',
+  find() {
+    return super.foo;
+  }
+};
+
+Object.setPrototypeOf(obj, proto);
+obj.find() // "hello"
+```
+es6中新增了关键字super，指向当前对象的原型对象。
+
+```js
+// a
+const obj = {
+  foo: super.foo
+}
+// b
+const obj = {
+  foo: () => super.foo 
+}
+// c
+const obj = {
+  foo: function () {
+    return super.foo
+  }
+}
+```
+三种不算在对象方法中的情况，都会报错
+
+### [对象的扩展运算符](https://es6.ruanyifeng.com/#docs/object#对象的扩展运算符)
+
+#### [解构赋值]()
+``` js
+let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+console.log(x) // 1
+console.log(y) // 2
+console.log(z) // { a: 3, b: 4 }
+```
+
+```js
+let obj = { a: { b: 1 } };
+let { ...x } = obj;
+obj.a.b = 2;
+x.a.b // 2
+```
+与数组不同，对象的解构赋值是浅拷贝
+
+## [运算符的扩展](https://es6.ruanyifeng.com/#docs/operator)
+
+### [链判断运算符](https://es6.ruanyifeng.com/#docs/operator#链判断运算符)
+
+```js
+// 错误的写法
+const  firstName = message.body.user.firstName || 'default';
+
+// 正确的写法
+const firstName = (message
+  && message.body
+  && message.body.user
+  && message.body.user.firstName) || 'default';
+
+// es5写法
+const fooInput = myForm.querySelector('input[name=foo]')
+const fooValue = fooInput ? fooInput.value : undefined
+
+// es2020写法
+const firstName = message?.body?.user?.firstName || 'default';
+const fooValue = myForm.querySelector('input[name=foo]')?.value
+iterator.return?.() // 判断存在后执行
+```
+
+#### [短路机制]()
+```js
+a?.[++x]
+// 等同于
+a == null ? undefined : a[++x]
+```
+
+#### [报错场合]()
+```js
+// 构造函数
+new a?.()
+new a?.b()
+
+// 链判断运算符的右侧有模板字符串
+a?.`{b}`
+a?.b`{c}`
+
+// 链判断运算符的左侧是 super
+super?.()
+super?.foo
+
+// 链运算符用于赋值运算符左侧
+a?.b = c
+```
+
+#### [右侧不得为十进制数值]()
+`is?.3` 优先将 `.3` 视作小数，然后再解释 `?` 将索要 `:` 从而报错。
+
+### [逻辑赋值运算符](https://es6.ruanyifeng.com/#docs/operator#逻辑赋值运算符)
+
+```js
+// 或赋值运算符
+x ||= y
+// 等同于
+x || (x = y)
+
+// 与赋值运算符
+x &&= y
+// 等同于
+x && (x = y)
+
+// Null 赋值运算符
+x ??= y
+// 等同于
+x ?? (x = y)
+```
+
+## [Symbol](https://es6.ruanyifeng.com/#docs/symbol)
+
+```js
+> a = Symbol('a')
+Symbol(a)
+> aa = Symbol('a')
+Symbol(a)
+> obj[a]=1
+1
+> obj[aa]
+undefined
+
+> Object.getOwnPropertySymbols(obj)
+[ Symbol(a) ]
+> obj[aa]=2
+2
+> Object.getOwnPropertySymbols(obj)
+[ Symbol(a), Symbol(a) ]
+```
+
+### [Symbol-for，Symbol-keyFor](https://es6.ruanyifeng.com/#docs/symbol#Symbol-for，Symbol-keyFor)
+
+``` js
+> Object.getOwnPropertySymbols(obj)
+[ Symbol(a), Symbol(a) ]
+> a === aa
+false
+> a = Symbol.for('a')
+Symbol(a)
+> aa = Symbol.for('a')
+Symbol(a)
+> a === aa
+true
+```
+`Symbol.for()`方法可以在我们希望使用同一个Symbol值的时候从全局环境中登记、搜索以便共用。
+
+```js
+let s1 = Symbol.for("foo");
+Symbol.keyFor(s1) // "foo"
+
+let s2 = Symbol("foo");
+Symbol.keyFor(s2) // undefined
+```
+`Symbol.keyFor()`可以从全局环境中找到对应的key，仅供于`Symbol.for()`创建的Symbol变量
+
+<!-- ## [Set 和 Map 数据结构](https://es6.ruanyifeng.com/#docs/set-map)
+
+### [WeakSet](https://es6.ruanyifeng.com/#docs/set-map#WeakSet) --> 
+
+## [Promise](https://es6.ruanyifeng.com/#docs/promise)
+
+### [Promise.prototype.finally()]()
+finally()方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
+```js
+let nums = [8,16,1,2,4,'asd',undefined]
+let res = []
+for(let v of nums){
+  new Promise((resolve,reject)=>{
+    if (typeof v=='number') {
+      setTimeout(()=>resolve(v),v)
+    }else{
+      reject(v)
+    }
+  }).then((v)=>{
+    res.push(v);
+  }).catch((v)=>{
+    console.log(v)
+  }).finally(()=>{
+    console.log(res)
+  })
+}
+/**
+asd
+main.js:14
+undefined
+main.js:14
+(0) []
+(0) []
+(1) [1]
+(2) [1, 2]
+(3) [1, 2, 4]
+(4) [1, 2, 4, 8]
+(5) [1, 2, 4, 8, 16]
+*/
+```
+
+## [Iterator 和 for...of 循环](https://es6.ruanyifeng.com/#docs/iterator)
+
+### [Iterator 接口与 Generator 函数](https://es6.ruanyifeng.com/#docs/iterator#Iterator-接口与-Generator-函数)
+```js
+let primes = ((max)=>{
+  let nums = [];
+  let num = 2;
+  return {
+    *[Symbol.iterator](){
+      while(true){
+        if(num>max)break;
+        yield num;
+        while(true){
+          num+=1;
+          let flag=true;
+          for(let root of nums){
+            if(num%root===0){
+              flag=false;
+              break;
+            }
+          }
+          if(flag){
+            nums.push(num);
+            break;
+          }
+        }
+      }
+      
+    }
+  }
+})(10)
+
+for(let i of primes){
+  console.log(i)
+} // 2 3 5 7
+```

@@ -1,11 +1,29 @@
-// file main.js
-console.log(this === globalThis) // false
-this.s=21
-const obj = {
-  s: 42,
-  m(){
-      console.log(this)
-      console.log(this.s)
+let primes = ((max)=>{
+  let nums = [];
+  let num = 2;
+  return {
+    *[Symbol.iterator](){
+      while(true){
+        if(num>max)break;
+        yield num;
+        nums.push(num);
+        while(true){
+          num+=1;
+          let flag=true;
+          for(let root of nums){
+            if(num%root===0){
+              flag=false;
+              break;
+            }
+          }
+          if(flag)break;
+        }
+      }
+      
+    }
   }
-};
-obj.m.call(this) // 21
+})(10)
+
+for(let i of primes){
+  console.log(i)
+}
