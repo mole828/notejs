@@ -569,3 +569,70 @@ for(let i of primes){
   console.log(i)
 } // 2 3 5 7
 ```
+
+### [默认 Iterator 接口](https://es6.ruanyifeng.com/#docs/iterator#默认-Iterator-接口)
+
+```js
+class RangeIterator {
+  constructor(start, stop) {
+    this.value = start;
+    this.stop = stop;
+  }
+  [Symbol.iterator]() { return this; }
+  next() {
+    var value = this.value;
+    if (value < this.stop) {
+      this.value++;
+      return {done: false, value: value};
+    }
+    return {done: true, value: undefined};
+  }
+}
+
+function range(...args) {
+  if(args.length===1)return new RangeIterator(0, ...args);
+  if(args.length===2)return new RangeIterator(...args);
+  return []
+}
+
+for (let value of range(3)) {
+  console.log(value); // 0, 1, 2
+}
+```
+
+### [遍历器对象的 return()，throw()](https://es6.ruanyifeng.com/#docs/iterator#遍历器对象的-return，throw)
+```js
+function readLinesSync(file) {
+  return {
+    [Symbol.iterator]() {
+      return {
+        next() {
+          return { value:`done:${false}`,done: false };
+        },
+        return() {
+          file.close();
+          return { done: true };
+        }
+      };
+    },
+  };
+}
+let file = {
+  close(){
+    console.log('close')
+  }
+}
+let reader = readLinesSync(file)
+
+let time = 2
+for(let data of reader){
+  console.log(data)
+  if(!time-->0)break;
+}
+/**
+done:false
+done:false
+done:false
+close
+*/
+```
