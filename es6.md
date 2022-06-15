@@ -736,3 +736,35 @@ f2 2
 */
 ```
 await可以改变async函数的执行顺序。
+
+
+## [Class 的基本语法](https://es6.ruanyifeng.com/#docs/class)
+```js
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return '(' + this.x + ', ' + this.y + ')';
+  }
+}
+console.log(typeof Point) // "function"
+console.log(Point === Point.prototype.constructor) // true
+let p = new Point(x=1,y=2)
+console.log(p.toString()) // (1, 2)
+console.log(Object.keys(p)) // (2) ['x', 'y']  // 类内定义的方法不可枚举
+console.log(Point.prototype) // {constructor: ƒ, toString: ƒ}
+```
+
+### [constructor 方法](https://es6.ruanyifeng.com/#docs/class#constructor-方法)
+``` js
+class Foo {
+  constructor() {
+    return Object.create(null);
+  }
+}
+console.log(new Foo() instanceof Foo)  // false
+```
+constructor()函数可以返回一个全新的、完全不同的对象，结果导致实例对象不是Foo类的实例。

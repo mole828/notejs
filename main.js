@@ -1,26 +1,16 @@
-async function f1(){
-  await console.log('f1 start')
-  for(let i of Array(3).keys()){
-    await console.log('f1',i)
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return '(' + this.x + ', ' + this.y + ')';
   }
 }
-async function f2(){
-  await console.log('f2 start')
-  for(let i of Array(3).keys()){
-    await console.log('f2',i)
-  }
-}
-
-function normal(){
-  console.log('start');
-  (async ()=>{
-    f1();
-    (async ()=>{
-      f2()
-    })()
-  })()
-  console.log('end')
-}
-
-normal()
-console.log('free')
+console.log(typeof Point) // "function"
+console.log(Point === Point.prototype.constructor) // true
+let p = new Point(x=1,y=2)
+console.log(p.toString()) // (1, 2)
+console.log(Object.keys(p)) 
+console.log(Point.prototype)
