@@ -768,3 +768,17 @@ class Foo {
 console.log(new Foo() instanceof Foo)  // false
 ```
 constructor()函数可以返回一个全新的、完全不同的对象，结果导致实例对象不是Foo类的实例。
+
+### [注意点]()
+
+#### [不存在提升]()
+```js
+new Foo(); // ReferenceError
+class Foo {}
+```
+
+#### [name 属性]()
+```js
+class Point {}
+Point.name // "Point" 
+```

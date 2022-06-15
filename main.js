@@ -1,16 +1,28 @@
-class Point {
-  constructor(x, y) {
-    this.x = x;
+class Point{
+  x;y;
+  constructor(x,y){
     this.y = y;
-  }
-
-  toString() {
-    return '(' + this.x + ', ' + this.y + ')';
+    this.x = x;
+  };
+  toJSON(){
+    return {
+      x: this.x,
+      y: this.y,
+    }
+  };
+  toString(){
+    return JSON.stringify(this)
+  };
+}
+class ColorPoint extends Point{
+  color;
+  constructor(x,y,color,){
+    super(x,y);
+    this.color = color;
+  };
+  toJSON(){
+    return Object.assign(super.toJSON(), {color:this.color});
   }
 }
-console.log(typeof Point) // "function"
-console.log(Point === Point.prototype.constructor) // true
-let p = new Point(x=1,y=2)
-console.log(p.toString()) // (1, 2)
-console.log(Object.keys(p)) 
-console.log(Point.prototype)
+let p = new ColorPoint(1,2,'red')
+console.log(p.toString())
