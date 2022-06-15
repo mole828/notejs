@@ -636,3 +636,103 @@ done:false
 close
 */
 ```
+
+## [Generator 函数的语法](https://es6.ruanyifeng.com/#docs/generator)
+
+### [Generator.prototype.return()](https://es6.ruanyifeng.com/#docs/generator#Generator-prototype-return)
+```js
+let g = (function* () {
+  console.info('I\'m created') // 1
+  yield 1
+  console.info('I\'ve done my job') // 2
+})()
+console.log(g.next()) // I'm created {value: 1, done: false}  // 1
+console.log(g.next()) // I've done my job {value: undefined, done: true}  // 2
+console.log(g.next()) // {value: undefined, done: true}
+console.log(g.return(2)) // {value: 2, done: true}
+```
+next的调用与generator的执行息息相关。在调用next之后，才会执行函数开始到第一次yield语句之间的所有逻辑。若是直接调用return函数，则会直接返回不执行函数。
+### [yield* 表达式](https://es6.ruanyifeng.com/#docs/generator#yield--表达式)
+```js
+function* foo() {
+  yield 'a';
+  yield 'b';
+}
+
+function* bar() {
+  yield 'x';
+  // 手动遍历 foo()
+  for (let i of foo()) {
+    console.log(i);
+  }
+  yield 'y';
+}
+
+for (let v of bar()){
+  console.log(v);
+}
+```
+
+## [async 函数](https://es6.ruanyifeng.com/#docs/async)
+
+### [async 函数的实现原理](https://es6.ruanyifeng.com/#docs/async#async-函数的实现原理)
+```js
+async function f1(){
+  await console.log('f1 start')
+  for(let i of Array(3).keys()){
+    await console.log('f1',i)
+  }
+}
+async function f2(){
+  await console.log('f2 start')
+  for(let i of Array(3).keys()){
+    await console.log('f2',i)
+  }
+}
+
+f1()
+f2()
+/***
+f1 start
+f2 start
+f1 0
+f2 0
+f1 1
+f2 1
+f1 2
+f2 2
+*/
+```
+async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里。
+
+### [await]()
+
+```js
+async function f1(){
+  await console.log('f1 start')
+  for(let i of Array(3).keys()){
+    await console.log('f1',i)
+  }
+}
+async function f2(){
+  await console.log('f2 start')
+  for(let i of Array(3).keys()){
+    await console.log('f2',i)
+  }
+}
+(async ()=>{
+  await f1()
+  f2()
+})()
+/**
+f1 start
+f1 0
+f1 1
+f1 2
+f2 start
+f2 0
+f2 1
+f2 2
+*/
+```
+await可以改变async函数的执行顺序。
