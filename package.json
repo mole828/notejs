@@ -1,0 +1,20 @@
+{
+  "name": "notejs",
+  "version": "1.0.0",
+  "description": "## JS基础 [教材](https://github.com/mynane/PDF/blob/master/JavaScript权威指南(第6版)(中文版).pdf)",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mole828/notejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mole828/notejs/issues"
+  },
+  "homepage": "https://github.com/mole828/notejs#readme"
+}

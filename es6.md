@@ -782,3 +782,88 @@ class Foo {}
 class Point {}
 Point.name // "Point" 
 ```
+
+## [Class 的继承](https://es6.ruanyifeng.com/#docs/class-extends)
+
+```js
+class Point{
+  x;y;
+  constructor(x,y){
+    this.y = y;
+    this.x = x;
+  };
+  toJSON(){
+    return {
+      x: this.x,
+      y: this.y,
+    }
+  };
+  toString(){
+    return JSON.stringify(this)
+  };
+}
+class ColorPoint extends Point{
+  color;
+  constructor(x,y,color,){
+    super(x,y);
+    this.color = color;
+  };
+  toJSON(){
+    return Object.assign(super.toJSON(), {color:this.color});
+  }
+}
+let p = new ColorPoint(1,2,'red')
+console.log(p.toString())
+// {"x":1,"y":2,"color":"red"}
+```
+
+
+## [Module 的语法](https://es6.ruanyifeng.com/#docs/module)
+
+```js
+// CommonJS模块
+let { stat, exists, readfile } = require('fs');
+
+// 等同于
+let _fs = require('fs');
+let stat = _fs.stat;
+let exists = _fs.exists;
+let readfile = _fs.readfile;
+```
+ES6 模块的设计思想是尽量的静态化，将其他包内的变量、方法像是函数返回值一样引入到其他文件。
+
+```js
+// ES6模块
+import { stat, exists, readFile } from 'fs';
+```
+import 方式是"编译时加载"，比起CommonJS模块加载效率更高。
+
+```json
+{
+  "name": "notejs",
+  "version": "1.0.0",
+  "description": "## JS基础 [教材](https://github.com/mynane/PDF/blob/master/JavaScript权威指南(第6版)(中文版).pdf)",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mole828/notejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mole828/notejs/issues"
+  },
+  "homepage": "https://github.com/mole828/notejs#readme"
+}
+```
+使用时应该加上 
+
+``"type": "module",`` 
+
+否则会出现错误，无法通过
+
+``Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.``
