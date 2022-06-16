@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mole828/notejs/issues"
   },
-  "homepage": "https://github.com/mole828/notejs#readme"
+  "homepage": "https://github.com/mole828/notejs#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
