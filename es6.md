@@ -16,6 +16,17 @@ console.log(x) // 5
 }
 x = 1
 console.log(x)
+
+
+// file 2
+var x = 5
+console.log(x) // 5
+{
+    x = 4
+}
+console.log(x) // 4
+x = 1
+console.log(x)
 ```
 
 #### [不允许重复声明](https://es6.ruanyifeng.com/#docs/let#不允许重复声明)
@@ -169,6 +180,7 @@ console.log(sixth) // 5
 
 
 ## [数值的扩展](https://es6.ruanyifeng.com/#docs/number)
+### [Number.EPSILON](https://es6.ruanyifeng.com/#docs/number#Number-EPSILON)
 ```js
 Number.EPSILON === Math.pow(2, -52)
 // true
@@ -178,7 +190,7 @@ Number.EPSILON.toFixed(20)
 // "0.00000000000000022204"
 ```
 Number.EPSILON 实际上是 JavaScript 能够表示的最小精度。误差如果小于这个值，就可以认为已经没有意义了，即不存在误差了。
-[链接](https://es6.ruanyifeng.com/#docs/number#Number-EPSILON)
+
 
 ### [安全整数和 Number.isSafeInteger](https://es6.ruanyifeng.com/#docs/number#安全整数和-Number-isSafeInteger)
 
@@ -867,3 +879,76 @@ import 方式是"编译时加载"，比起CommonJS模块加载效率更高。
 否则会出现错误，无法通过
 
 ``Warning: To load an ES module, set "type": "module" in the package.json or use the .mjs extension.``
+
+
+### [import 命令](https://es6.ruanyifeng.com/#docs/module#import-命令)
+
+```js
+// tools.js
+export function range(num){
+  let i=0;
+  return {
+    [Symbol.iterator](){
+      return {
+        next(){
+          return {
+            value: i, 
+            done:i++===num,
+          }
+        }
+      }
+    }
+  }
+}
+// main.js
+import lodash from "lodash"; 
+import {range} from "./tools.js";
+
+console.log(
+  ...lodash.chunk([...range(8)],3) 
+  // (3) [0, 1, 2] (3) [3, 4, 5] (2) [6, 7]
+);
+``` 
+
+#### [import()]()
+```js
+import(specifier)
+```
+ES2020提案 引入import()函数，支持动态加载模块。
+
+## [Module 的加载实现](https://es6.ruanyifeng.com/#docs/module-loader)
+
+### [ES6 模块与 CommonJS 模块的差异](https://es6.ruanyifeng.com/#docs/module-loader#ES6-模块与-CommonJS-模块的差异)
+
+```js
+// lib.js
+var counter = 3;
+function incCounter() {
+  counter++;
+}
+module.exports = {
+  counter: counter,
+  incCounter: incCounter,
+};
+// main.js
+var mod = require('./lib');
+console.log(mod.counter);  // 3
+mod.incCounter();
+console.log(mod.counter); // 3
+```
+CommonJS 方式加载的情况下，counter会被作为值传输，除非使用一个get类的方法，否则不能获取统一的值。
+
+```js
+// lib.js
+export let counter = 3;
+export function incCounter() {
+  counter++;
+}
+
+// main.js
+import { counter, incCounter } from './lib';
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+```
+而 ES6 中的 import 就是切实反映 lib.js 中变化的引入方式。
