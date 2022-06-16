@@ -1,8 +1,10 @@
-var x = 5
-console.log(x) // 5
-{
-    x = 4
-}
-console.log(x) // 4
-x = 1
-console.log(x)
+import {range, primes} from './tools.js';
+
+new Promise((resolve)=>{
+    console.log('resolve')
+    resolve()
+}).then(()=>{
+    console.log('then 1')
+})
+for(const p of range(2))console.log(p)
+for(const p of primes(100))console.log(p)
