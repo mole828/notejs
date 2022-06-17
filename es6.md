@@ -115,8 +115,8 @@ var constantize = (obj) => {
 window // Window {...}
 self // Window {...}
 this // Window {...}
-global // Window {...}
-globalThis // ReferenceError: Can't find variable: global
+global // ReferenceError: Can't find variable: global
+globalThis // Window {...}
 
 // Node
 window // Uncaught ReferenceError: window is not defined
@@ -952,3 +952,29 @@ incCounter();
 console.log(counter); // 4
 ```
 而 ES6 中的 import 就是切实反映 lib.js 中变化的引入方式。
+
+
+## [读懂 ECMAScript 规格](https://es6.ruanyifeng.com/#docs/spec)
+
+### [相等运算符](https://es6.ruanyifeng.com/#docs/spec#相等运算符)
+
+```js
+x == y
+```
+
+上面这段算法，一共有 12 步，翻译如下。
+
+```
+1.如果x不是正常值（比如抛出一个错误），中断执行。
+2.如果y不是正常值，中断执行。
+3.如果Type(x)与Type(y)相同，执行严格相等运算x === y。
+4.如果x是null，y是undefined，返回true。
+5.如果x是undefined，y是null，返回true。
+6.如果Type(x)是数值，Type(y)是字符串，返回x == ToNumber(y)的结果。
+7.如果Type(x)是字符串，Type(y)是数值，返回ToNumber(x) == y的结果。
+8.如果Type(x)是布尔值，返回ToNumber(x) == y的结果。
+9.如果Type(y)是布尔值，返回x == ToNumber(y)的结果。
+10.如果Type(x)是字符串或数值或Symbol值，Type(y)是对象，返回x == ToPrimitive(y)的结果。
+11.如果Type(x)是对象，Type(y)是字符串或数值或Symbol值，返回ToPrimitive(x) == y的结果。
+12.返回false。
+```
